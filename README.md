@@ -127,6 +127,14 @@ npm test
 If you hit a push failure this tool did not catch, open an issue with your
 `app.json` and the entitlements output. That is the most useful contribution.
 
+## Related
+
+[**expo-preflight**](https://github.com/aprilNH7/expo-preflight) is the wider
+version of the same idea: 17 checks for everything else that fails at upload or
+in App Review, from an icon with an alpha channel, to a secret inlined into your
+JS bundle, to an OTA update that cannot reach a single installed device. Same
+zero-dependency, one-command shape.
+
 ## License
 
 MIT
