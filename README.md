@@ -1,5 +1,9 @@
 # expo-push-doctor
 
+[![test](https://github.com/aprilNH7/expo-push-doctor/actions/workflows/test.yml/badge.svg)](https://github.com/aprilNH7/expo-push-doctor/actions/workflows/test.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![node](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](package.json)
+
 Find out why iOS push notifications are silently broken in your Expo app, in one command.
 
 ```
