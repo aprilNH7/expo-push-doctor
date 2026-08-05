@@ -1,0 +1,45 @@
+{
+  "name": "expo-push-doctor",
+  "version": "1.0.0",
+  "description": "Find out why iOS push notifications are silently broken in your Expo app, in one command.",
+  "keywords": [
+    "expo",
+    "react-native",
+    "push-notifications",
+    "apns",
+    "eas",
+    "aps-environment",
+    "expo-notifications",
+    "ios",
+    "debugging",
+    "cli"
+  ],
+  "license": "MIT",
+  "author": "aprilNH7",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aprilNH7/expo-push-doctor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aprilNH7/expo-push-doctor/issues"
+  },
+  "homepage": "https://github.com/aprilNH7/expo-push-doctor#readme",
+  "type": "commonjs",
+  "bin": {
+    "expo-push-doctor": "bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/",
+    "lint": "node -e \"require('./src/checks.js');require('./src/report.js');console.log('ok')\""
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}
