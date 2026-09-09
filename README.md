@@ -12,6 +12,11 @@ npx expo-push-doctor
 
 No install, no config, no dependencies.
 
+## Requirements
+
+- Node.js 18 or later
+- macOS is required only for `--ipa` inspection (it uses `codesign`).
+
 ## Why this exists
 
 An Expo app shipped to TestFlight with push notifications that never arrived. No
