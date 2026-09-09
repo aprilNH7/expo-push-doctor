@@ -137,6 +137,7 @@ test('matching modes pass, and an unknown side skips', () => {
 test('missing dependency and bundle identifier both fail', () => {
   assert.strictEqual(checkDependency({ dependencies: {} }).status, FAIL);
   assert.strictEqual(checkDependency({ dependencies: { 'expo-notifications': '~0.31.5' } }).status, PASS);
+  assert.strictEqual(checkDependency({ devDependencies: { 'expo-notifications': '~0.31.5' } }).status, PASS);
   assert.strictEqual(checkBundleIdentifier({}).status, FAIL);
   assert.strictEqual(checkBundleIdentifier({ ios: { bundleIdentifier: 'com.a.b' } }).status, PASS);
 });
