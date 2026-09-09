@@ -12,9 +12,19 @@ function parseArgs(argv) {
   const args = { path: process.cwd(), ipa: null, json: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === '--path' || a === '-p') args.path = argv[++i];
-    else if (a === '--ipa') args.ipa = argv[++i];
-    else if (a === '--json') args.json = true;
+    if (a === '--path' || a === '-p') {
+      const v = argv[++i];
+      if (!v || v.startsWith('-')) {
+        return { error: '--path requires a directory argument.' };
+      }
+      args.path = v;
+    } else if (a === '--ipa') {
+      const v = argv[++i];
+      if (!v || v.startsWith('-')) {
+        return { error: '--ipa requires a file path argument.' };
+      }
+      args.ipa = v;
+    } else if (a === '--json') args.json = true;
     else if (a === '--help' || a === '-h') args.help = true;
     else if (a === '--version' || a === '-v') args.version = true;
   }
@@ -134,6 +144,10 @@ function inspectIpa(ipaPath) {
 
 function main() {
   const args = parseArgs(process.argv.slice(2));
+  if (args.error) {
+    process.stderr.write(args.error + '\n');
+    return 2;
+  }
   if (args.help) {
     process.stdout.write(HELP);
     return 0;

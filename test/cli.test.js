@@ -98,3 +98,13 @@ test('--help and --version exit 0', () => {
   assert.strictEqual(run(['--help']).code, 0);
   assert.match(run(['--version']).stdout.trim(), /^\d+\.\d+\.\d+$/);
 });
+
+test('missing required flag values are reported instead of mis-parsed', () => {
+  const missingPath = run(['--path']);
+  assert.strictEqual(missingPath.code, 2);
+  assert.match(missingPath.stderr, /--path requires a directory argument/);
+
+  const missingIpa = run(['--ipa', '--json']);
+  assert.strictEqual(missingIpa.code, 2);
+  assert.match(missingIpa.stderr, /--ipa requires a file path argument/);
+});
