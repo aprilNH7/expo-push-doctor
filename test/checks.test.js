@@ -9,6 +9,7 @@ const {
   INFO,
   SKIP,
   normalizeConfig,
+  parseMajor,
   findPlugin,
   checkNotificationsPlugin,
   checkDependency,
@@ -26,6 +27,14 @@ test('normalizeConfig unwraps app.json but leaves app.config.js alone', () => {
   assert.deepStrictEqual(normalizeConfig({ expo: { name: 'a' } }), { name: 'a' });
   assert.deepStrictEqual(normalizeConfig({ name: 'b' }), { name: 'b' });
   assert.deepStrictEqual(normalizeConfig(null), {});
+});
+
+test('parseMajor reads the leading integer from a semver range', () => {
+  assert.strictEqual(parseMajor('~53.0.0'), 53);
+  assert.strictEqual(parseMajor('^52.1.2'), 52);
+  assert.strictEqual(parseMajor('51.0.0'), 51);
+  assert.strictEqual(parseMajor(null), null);
+  assert.strictEqual(parseMajor('latest'), null);
 });
 
 test('findPlugin handles both string and [name, options] shapes', () => {

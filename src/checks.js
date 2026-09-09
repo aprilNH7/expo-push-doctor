@@ -327,6 +327,7 @@ module.exports = {
   INFO,
   SKIP,
   normalizeConfig,
+  parseMajor,
   findPlugin,
   checkNotificationsPlugin,
   checkDependency,
