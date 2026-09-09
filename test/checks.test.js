@@ -153,6 +153,8 @@ test('missing dependency and bundle identifier both fail', () => {
 test('a missing EAS projectId warns, since getExpoPushTokenAsync throws without it', () => {
   assert.strictEqual(checkProjectId({}).status, WARN);
   assert.strictEqual(checkProjectId({ extra: { eas: { projectId: 'x' } } }).status, PASS);
+  assert.strictEqual(checkProjectId({ extra: { eas: { projectId: '' } } }).status, WARN);
+  assert.strictEqual(checkProjectId({ extra: { eas: { projectId: 123 } } }).status, WARN);
 });
 
 test('Expo Go is flagged on SDK 53+ because it masks the real failure', () => {

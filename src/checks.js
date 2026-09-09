@@ -285,16 +285,16 @@ function checkExpoGo(pkg) {
 
 function checkProjectId(config) {
   const id = config.extra && config.extra.eas && config.extra.eas.projectId;
-  if (!id) {
+  if (!id || typeof id !== 'string' || id.trim() === '') {
     return {
       id: 'project-id',
       title: 'EAS projectId set',
       status: WARN,
-      detail: 'extra.eas.projectId is missing. getExpoPushTokenAsync needs it in a bare/standalone build and will throw without it.',
-      fix: 'Run eas init, or set extra.eas.projectId manually.',
+      detail: 'extra.eas.projectId is missing or empty. getExpoPushTokenAsync needs it in a bare/standalone build and will throw without it.',
+      fix: 'Run eas init, or set extra.eas.projectId to a non-empty string.',
     };
   }
-  return { id: 'project-id', title: 'EAS projectId set', status: PASS, detail: String(id) };
+  return { id: 'project-id', title: 'EAS projectId set', status: PASS, detail: id };
 }
 
 /**
