@@ -64,6 +64,9 @@ npx expo-push-doctor --ipa ~/Downloads/build.ipa
 
 # machine-readable
 npx expo-push-doctor --json
+
+# disable ANSI colors for logs
+NO_COLOR=1 npx expo-push-doctor
 ```
 
 Exit code is `1` when a blocking problem is found, so it works as a CI gate:
