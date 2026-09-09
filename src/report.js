@@ -3,6 +3,13 @@
 const { FAIL, WARN, PASS, INFO, SKIP } = require('./checks.js');
 
 const useColor = process.stdout.isTTY && !process.env.NO_COLOR;
+
+/**
+ * Wrap an ANSI escape code around a string, unless color has been disabled.
+ * @param {string} code - SGR code, e.g. '31' for red.
+ * @param {string} s - String to color.
+ * @returns {string}
+ */
 const c = (code, s) => (useColor ? `\u001b[${code}m${s}\u001b[0m` : s);
 
 const MARK = {
@@ -13,6 +20,14 @@ const MARK = {
   [SKIP]: () => c('90', 'SKIP'),
 };
 
+/**
+ * Naive word-wrap: split on whitespace and refill lines so they fit inside
+ * `width`. Continuation lines are prefixed with `indent`.
+ * @param {string} text
+ * @param {number} width
+ * @param {string} indent
+ * @returns {string}
+ */
 function wrap(text, width, indent) {
   const words = String(text).split(/\s+/);
   const lines = [];
@@ -29,6 +44,11 @@ function wrap(text, width, indent) {
   return lines.map((l, i) => (i === 0 ? l : indent + l)).join('\n');
 }
 
+/**
+ * Render a list of check results as a human-readable, terminal-wrapped report.
+ * @param {Array<{status: string, title: string, detail: string, fix?: string}>} results
+ * @returns {string}
+ */
 function render(results) {
   const width = Math.min(process.stdout.columns || 80, 100);
   const indent = ' '.repeat(7);
