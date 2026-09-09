@@ -59,6 +59,14 @@ test('a plugin with an explicit mode passes and reports it', () => {
   assert.match(r.detail, /production/);
 });
 
+test('a plugin with a misspelled or unknown mode warns', () => {
+  const r = checkNotificationsPlugin({ plugins: [['expo-notifications', { mode: 'prod' }]] });
+  assert.strictEqual(r.status, WARN);
+  assert.match(r.detail, /not a valid value/i);
+  assert.match(r.fix, /development/);
+  assert.match(r.fix, /production/);
+});
+
 test('entitlements are read from the plist, not guessed', () => {
   const good = `<plist><dict><key>aps-environment</key><string>production</string></dict></plist>`;
   const r = checkEntitlements(good, 'IQGen.entitlements');

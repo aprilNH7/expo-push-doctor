@@ -82,6 +82,15 @@ function checkNotificationsPlugin(config) {
       fix: 'Set { "mode": "production" } for release builds.',
     };
   }
+  if (mode !== 'development' && mode !== 'production') {
+    return {
+      id: 'plugin',
+      title: 'expo-notifications in plugins',
+      status: WARN,
+      detail: `Present with mode "${mode}", which is not a valid value. The plugin only recognizes "development" or "production".`,
+      fix: 'Set { "mode": "production" } for release builds, or "development" for local/debug builds.',
+    };
+  }
   return {
     id: 'plugin',
     title: 'expo-notifications in plugins',
