@@ -93,6 +93,18 @@ test('entitlements are read from the plist, not guessed', () => {
   assert.match(r.detail, /production/);
 });
 
+test('entitlements regex tolerates whitespace and newlines', () => {
+  const withWhitespace = `<plist version="1.0">
+    <dict>
+      <key> aps-environment </key>
+      <string> development </string>
+    </dict>
+  </plist>`;
+  const r = checkEntitlements(withWhitespace, 'App.entitlements');
+  assert.strictEqual(r.status, PASS);
+  assert.match(r.detail, /"development" in App\.entitlements/);
+});
+
 test('an empty entitlements dict is the real-world symptom and must fail', () => {
   // This is exactly what a build without the plugin produces.
   const r = checkEntitlements('<plist><dict/></plist>', 'app.entitlements');
