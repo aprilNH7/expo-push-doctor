@@ -34,6 +34,9 @@ test('parseMajor reads the leading integer from a semver range', () => {
   assert.strictEqual(parseMajor('~53.0.0'), 53);
   assert.strictEqual(parseMajor('^52.1.2'), 52);
   assert.strictEqual(parseMajor('51.0.0'), 51);
+  assert.strictEqual(parseMajor('>=53.0.0'), 53);
+  assert.strictEqual(parseMajor('*'), null);
+  assert.strictEqual(parseMajor('53'), null);
   assert.strictEqual(parseMajor(null), null);
   assert.strictEqual(parseMajor('latest'), null);
 });
