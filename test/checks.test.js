@@ -10,6 +10,7 @@ const {
   SKIP,
   normalizeConfig,
   parseMajor,
+  isValidMode,
   findPlugin,
   checkNotificationsPlugin,
   checkDependency,
@@ -35,6 +36,14 @@ test('parseMajor reads the leading integer from a semver range', () => {
   assert.strictEqual(parseMajor('51.0.0'), 51);
   assert.strictEqual(parseMajor(null), null);
   assert.strictEqual(parseMajor('latest'), null);
+});
+
+test('isValidMode only accepts development and production', () => {
+  assert.strictEqual(isValidMode('development'), true);
+  assert.strictEqual(isValidMode('production'), true);
+  assert.strictEqual(isValidMode('prod'), false);
+  assert.strictEqual(isValidMode(''), false);
+  assert.strictEqual(isValidMode(null), false);
 });
 
 test('findPlugin handles both string and [name, options] shapes', () => {

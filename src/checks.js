@@ -48,6 +48,10 @@ function findPlugin(config, name) {
   return { found: false, options: null };
 }
 
+function isValidMode(mode) {
+  return mode === 'development' || mode === 'production';
+}
+
 /**
  * The check that matters most, and the one that is almost impossible to spot by
  * reading your own config: this plugin is the only thing that writes the
@@ -82,7 +86,7 @@ function checkNotificationsPlugin(config) {
       fix: 'Set { "mode": "production" } for release builds.',
     };
   }
-  if (mode !== 'development' && mode !== 'production') {
+  if (!isValidMode(mode)) {
     return {
       id: 'plugin',
       title: 'expo-notifications in plugins',
@@ -328,6 +332,7 @@ module.exports = {
   SKIP,
   normalizeConfig,
   parseMajor,
+  isValidMode,
   findPlugin,
   checkNotificationsPlugin,
   checkDependency,
