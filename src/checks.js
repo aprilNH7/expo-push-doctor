@@ -103,6 +103,11 @@ function checkNotificationsPlugin(config) {
   };
 }
 
+/**
+ * Extract the major SDK version from a semver-style range. Ranges like ~53.0.0
+ * and ^52.1.2 are the normal shape in package.json; bare integers are rare,
+ * so the regex looks for the first digits followed by a dot.
+ */
 function parseMajor(range) {
   if (typeof range !== 'string') return null;
   const m = range.match(/(\d+)\./);
