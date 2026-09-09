@@ -16,6 +16,7 @@ const {
   checkEntitlements,
   checkModeAgreement,
   checkNativeDirs,
+  checkBackgroundModes,
   checkExpoGo,
   checkProjectId,
   runAllChecks,
@@ -131,6 +132,18 @@ test('no ios/ directory at all is reported as prebuild-generated', () => {
 test('a committed ios/ is reported differently', () => {
   const r = checkNativeDirs(true, 'node_modules/\n');
   assert.match(r.detail, /used as-is/);
+});
+
+test('background mode is reported as context, never a verdict', () => {
+  const set = checkBackgroundModes({
+    ios: { infoPlist: { UIBackgroundModes: ['remote-notification'] } },
+  });
+  assert.strictEqual(set.status, INFO);
+  assert.match(set.detail, /not the push entitlement/);
+
+  const unset = checkBackgroundModes({ ios: {} });
+  assert.strictEqual(unset.status, INFO);
+  assert.match(unset.detail, /Only needed for silent/);
 });
 
 test('runAllChecks reproduces the real-world broken project', () => {
