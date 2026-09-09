@@ -114,8 +114,16 @@ function parseMajor(range) {
   return m ? Number.parseInt(m[1], 10) : null;
 }
 
+/**
+ * Combine dependencies and devDependencies so a package is found whether it is
+ * a runtime dependency or only installed for development/testing.
+ */
+function mergeDependencies(pkg) {
+  return Object.assign({}, (pkg && pkg.dependencies) || {}, (pkg && pkg.devDependencies) || {});
+}
+
 function checkDependency(pkg) {
-  const deps = Object.assign({}, (pkg && pkg.dependencies) || {}, (pkg && pkg.devDependencies) || {});
+  const deps = mergeDependencies(pkg);
   const range = deps['expo-notifications'];
   if (!range) {
     return {
@@ -338,6 +346,7 @@ module.exports = {
   normalizeConfig,
   parseMajor,
   isValidMode,
+  mergeDependencies,
   findPlugin,
   checkNotificationsPlugin,
   checkDependency,

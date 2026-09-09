@@ -11,6 +11,7 @@ const {
   normalizeConfig,
   parseMajor,
   isValidMode,
+  mergeDependencies,
   findPlugin,
   checkNotificationsPlugin,
   checkDependency,
@@ -47,6 +48,17 @@ test('isValidMode only accepts development and production', () => {
   assert.strictEqual(isValidMode('prod'), false);
   assert.strictEqual(isValidMode(''), false);
   assert.strictEqual(isValidMode(null), false);
+});
+
+test('mergeDependencies combines dependencies and devDependencies', () => {
+  assert.deepStrictEqual(mergeDependencies(null), {});
+  assert.deepStrictEqual(mergeDependencies({}), {});
+  assert.strictEqual(mergeDependencies({ dependencies: { 'expo-notifications': '~1.0.0' } })['expo-notifications'], '~1.0.0');
+  assert.strictEqual(mergeDependencies({ devDependencies: { 'expo-notifications': '~2.0.0' } })['expo-notifications'], '~2.0.0');
+  assert.strictEqual(
+    mergeDependencies({ dependencies: { expo: '~52.0.0' }, devDependencies: { 'expo-notifications': '~2.0.0' } })['expo-notifications'],
+    '~2.0.0'
+  );
 });
 
 test('findPlugin handles both string and [name, options] shapes', () => {
