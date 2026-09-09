@@ -174,6 +174,8 @@ test('Expo Go is flagged on SDK 53+ because it masks the real failure', () => {
   assert.strictEqual(r.status, WARN);
   assert.match(r.detail, /permission as already granted/);
   assert.strictEqual(checkExpoGo({ dependencies: { expo: '~52.0.0' } }).status, PASS);
+  assert.strictEqual(checkExpoGo({ devDependencies: { expo: '~53.0.0' } }).status, WARN);
+  assert.strictEqual(checkExpoGo({}).status, SKIP);
 });
 
 test('a gitignored ios/ explains why Xcode edits vanish', () => {

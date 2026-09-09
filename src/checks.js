@@ -275,7 +275,7 @@ function checkBackgroundModes(config) {
 }
 
 function checkExpoGo(pkg) {
-  const major = parseMajor(((pkg && pkg.dependencies) || {}).expo);
+  const major = parseMajor(mergeDependencies(pkg).expo);
   if (!major) {
     return { id: 'expo-go', title: 'Expo Go support', status: SKIP, detail: 'Could not read the expo version.' };
   }
