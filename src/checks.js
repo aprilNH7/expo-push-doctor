@@ -40,7 +40,7 @@ function findPlugin(config, name) {
       continue;
     }
     if (Array.isArray(entry) && typeof entry[0] === 'string') {
-      if (entry[0] === name) {
+      if (entry[0] === name || entry[0] === `${name}/app.plugin.js`) {
         return { found: true, options: entry[1] && typeof entry[1] === 'object' ? entry[1] : null };
       }
     }

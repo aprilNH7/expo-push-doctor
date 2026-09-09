@@ -48,12 +48,19 @@ test('isValidMode only accepts development and production', () => {
 
 test('findPlugin handles both string and [name, options] shapes', () => {
   assert.strictEqual(findPlugin({ plugins: ['expo-notifications'] }, 'expo-notifications').found, true);
+  assert.strictEqual(findPlugin({ plugins: ['expo-notifications/app.plugin.js'] }, 'expo-notifications').found, true);
   const withOpts = findPlugin(
     { plugins: [['expo-notifications', { mode: 'production' }]] },
     'expo-notifications'
   );
   assert.strictEqual(withOpts.found, true);
   assert.strictEqual(withOpts.options.mode, 'production');
+  const withSuffix = findPlugin(
+    { plugins: [['expo-notifications/app.plugin.js', { mode: 'development' }]] },
+    'expo-notifications'
+  );
+  assert.strictEqual(withSuffix.found, true);
+  assert.strictEqual(withSuffix.options.mode, 'development');
   assert.strictEqual(findPlugin({ plugins: [] }, 'expo-notifications').found, false);
   assert.strictEqual(findPlugin({}, 'expo-notifications').found, false);
 });
