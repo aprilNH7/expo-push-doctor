@@ -136,13 +136,13 @@ function checkDependency(pkg) {
 
 function checkBundleIdentifier(config) {
   const id = config.ios && config.ios.bundleIdentifier;
-  if (!id) {
+  if (!id || typeof id !== 'string' || id.trim() === '' || id.includes(' ')) {
     return {
       id: 'bundle-id',
       title: 'ios.bundleIdentifier set',
       status: FAIL,
-      detail: 'Not set. APNs credentials are attached to a bundle identifier, so there is nothing to attach them to.',
-      fix: 'Set ios.bundleIdentifier in your app config.',
+      detail: 'Missing or invalid. APNs credentials are attached to a bundle identifier, so there is nothing to attach them to.',
+      fix: 'Set ios.bundleIdentifier to a non-empty string without spaces in your app config.',
     };
   }
   return { id: 'bundle-id', title: 'ios.bundleIdentifier set', status: PASS, detail: id };

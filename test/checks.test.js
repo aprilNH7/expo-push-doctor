@@ -145,6 +145,9 @@ test('missing dependency and bundle identifier both fail', () => {
   assert.strictEqual(checkDependency({ devDependencies: { 'expo-notifications': '~0.31.5' } }).status, PASS);
   assert.strictEqual(checkBundleIdentifier({}).status, FAIL);
   assert.strictEqual(checkBundleIdentifier({ ios: { bundleIdentifier: 'com.a.b' } }).status, PASS);
+  assert.strictEqual(checkBundleIdentifier({ ios: { bundleIdentifier: '' } }).status, FAIL);
+  assert.strictEqual(checkBundleIdentifier({ ios: { bundleIdentifier: 'com.a b' } }).status, FAIL);
+  assert.strictEqual(checkBundleIdentifier({ ios: { bundleIdentifier: 123 } }).status, FAIL);
 });
 
 test('a missing EAS projectId warns, since getExpoPushTokenAsync throws without it', () => {
