@@ -243,13 +243,16 @@ test('runAllChecks passes a correctly configured project', () => {
       expo: {
         plugins: [['expo-notifications', { mode: 'production' }]],
         ios: { bundleIdentifier: 'com.iqgen.energy' },
+        android: { package: 'com.iqgen.energy' },
         extra: { eas: { projectId: 'abc' } },
       },
     },
-    pkg: { dependencies: { expo: '~52.0.0', 'expo-notifications': '~0.31.5' } },
+    pkg: { dependencies: { expo: '~52.0.0', 'expo-notifications': '~0.31.5' }, expo: { android: { permissions: ['android.permission.POST_NOTIFICATIONS'] } } },
     entitlements: '<plist><dict><key>aps-environment</key><string>production</string></dict></plist>',
     entitlementsSource: 'signed binary',
     hasIosDir: false,
+    hasAndroidDir: false,
+    googleServicesJson: '/project/google-services.json',
     gitignore: '',
   });
   assert.strictEqual(results.filter((r) => r.status === FAIL).length, 0);

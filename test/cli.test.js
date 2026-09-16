@@ -47,12 +47,17 @@ const HEALTHY = {
     expo: {
       plugins: [['expo-notifications', { mode: 'production' }]],
       ios: { bundleIdentifier: 'com.example.app' },
+      android: { package: 'com.example.app' },
       extra: { eas: { projectId: 'abc-123' } },
     },
   }),
-  'package.json': JSON.stringify({ dependencies: { expo: '~52.0.0', 'expo-notifications': '~0.31.5' } }),
+  'package.json': JSON.stringify({
+    dependencies: { expo: '~52.0.0', 'expo-notifications': '~0.31.5' },
+    expo: { android: { permissions: ['android.permission.POST_NOTIFICATIONS'] } },
+  }),
   'ios/App/App.entitlements':
     '<plist version="1.0"><dict><key>aps-environment</key><string>production</string></dict></plist>',
+  'google-services.json': '{"project_info": {"project_id": "demo"}}',
 };
 
 test('exits 1 on a broken project so it can gate CI', () => {

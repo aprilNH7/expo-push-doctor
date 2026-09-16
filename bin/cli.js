@@ -191,6 +191,8 @@ function main() {
     entitlements: ent.text,
     entitlementsSource: ent.source,
     hasIosDir: fs.existsSync(path.join(root, 'ios')),
+    hasAndroidDir: fs.existsSync(path.join(root, 'android')),
+    googleServicesJson: fs.existsSync(path.join(root, 'google-services.json')) ? path.join(root, 'google-services.json') : null,
     gitignore: readText(path.join(root, '.gitignore')),
   });
 

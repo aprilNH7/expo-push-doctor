@@ -305,6 +305,44 @@ function checkProjectId(config) {
   return { id: 'project-id', title: 'EAS projectId set', status: PASS, detail: id };
 }
 
+function checkFcmConfig(config, hasAndroidDir, googleServicesJson) {
+  const plugin = findPlugin(config, 'expo-notifications');
+  const androidPackage = config.android && config.android.package;
+  if (!plugin.found) {
+    return { id: 'fcm-plugin', title: 'expo-notifications FCM plugin', status: SKIP, detail: 'iOS-only check because the notifications plugin is missing.' };
+  }
+  if (!androidPackage) {
+    return { id: 'fcm-package', title: 'Android package name', status: WARN, detail: 'No android.package set; FCM cannot be configured without it.', fix: 'Set android.package in your app config.' };
+  }
+  if (!googleServicesJson) {
+    return {
+      id: 'fcm-config',
+      title: 'google-services.json for FCM',
+      status: hasAndroidDir ? FAIL : WARN,
+      detail: hasAndroidDir
+        ? 'Android push requires google-services.json in the project root, but it was not found.'
+        : 'Managed workflow: make sure google-services.json is uploaded to EAS or included at build time.',
+      fix: 'Download google-services.json from Firebase and place it in your project root.',
+    };
+  }
+  return { id: 'fcm-config', title: 'google-services.json for FCM', status: PASS, detail: 'Found google-services.json.' };
+}
+
+function checkPostNotificationsPermission(pkg) {
+  const manifest = pkg.expo && pkg.expo.android && pkg.expo.android.permissions;
+  const perms = Array.isArray(manifest) ? manifest : [];
+  if (perms.includes('android.permission.POST_NOTIFICATIONS')) {
+    return { id: 'android-post-notifs', title: 'Android POST_NOTIFICATIONS permission', status: PASS, detail: 'Permission is declared.' };
+  }
+  return {
+    id: 'android-post-notifs',
+    title: 'Android POST_NOTIFICATIONS permission',
+    status: WARN,
+    detail: 'Android 13+ requires POST_NOTIFICATIONS to request permission at runtime.',
+    fix: 'Add android.permission.POST_NOTIFICATIONS to your Android permissions.',
+  };
+}
+
 /**
  * @param {object} input
  * @param {object|null} input.appConfig   parsed app.json / app.config.js
@@ -312,6 +350,8 @@ function checkProjectId(config) {
  * @param {string|null} input.entitlements  entitlements XML, if any
  * @param {string|null} input.entitlementsSource  where it came from
  * @param {boolean} input.hasIosDir
+ * @param {boolean} input.hasAndroidDir
+ * @param {string|null} input.googleServicesJson
  * @param {string|null} input.gitignore
  */
 function runAllChecks(input) {
@@ -334,6 +374,8 @@ function runAllChecks(input) {
     checkExpoGo(pkg),
     checkNativeDirs(input.hasIosDir, input.gitignore),
     checkBackgroundModes(config),
+    checkFcmConfig(config, input.hasAndroidDir, input.googleServicesJson),
+    checkPostNotificationsPermission(pkg),
   ];
 }
 
@@ -357,5 +399,7 @@ module.exports = {
   checkBackgroundModes,
   checkExpoGo,
   checkProjectId,
+  checkFcmConfig,
+  checkPostNotificationsPermission,
   runAllChecks,
 };
